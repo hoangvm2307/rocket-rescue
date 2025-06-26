@@ -68,17 +68,14 @@ public class PlayerWeapon : MonoBehaviour
         lineRenderer.enabled = false;
 
         float screenDragMagnitude = (dragStartScreenPos - screenPosition).magnitude;
-        
-        // Clamp the drag magnitude to the max distance
+         
         screenDragMagnitude = Mathf.Min(screenDragMagnitude, maxDragDistance);
-
-        // Normalize the drag distance to a 0-1 range
+ 
         float normalizedDrag = screenDragMagnitude / maxDragDistance;
-
-        // Use the AnimationCurve to get the final power
+ 
         float power = dragToPowerCurve.Evaluate(normalizedDrag);
 
-        if (power > 0.05f) // Add a small threshold to avoid firing on simple clicks
+        if (power > 0.05f)  
         {
             Vector3 worldDragDirection = (dragStartScreenPos - screenPosition).normalized;
             FireRocket(worldDragDirection, power);
