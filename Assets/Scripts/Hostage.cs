@@ -2,20 +2,19 @@ using UnityEngine;
 
 public class Hostage : MonoBehaviour
 {
+    [SerializeField] private GameEvent onAllEnemiesDefeatedAndHostageReached;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (GameManager.Instance.AreAllEnemiesDefeated())
-            {
-                GameManager.Instance.WinGame();
-                Destroy(gameObject);
-            }
-            else
-            {
-                Debug.Log("Kill all enemies before rescuing the hostage!");
-
-            }
+            // The Hostage's only job is to announce it has been reached.
+            // The GameManager will decide if this constitutes a win.
+            onAllEnemiesDefeatedAndHostageReached?.Raise();
+            
+            // Optionally, disable the hostage to prevent re-triggering.
+            // Destroy(gameObject) could also work.
+            gameObject.SetActive(false);
         }
     }
 }

@@ -453,6 +453,10 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 2305414257462093464}
+    - target: {fileID: 3545979649869939753, guid: e84a8713176d9e24480abd132b2af684, type: 3}
+      propertyPath: onEnemyDefeatedEvent
+      value: 
+      objectReference: {fileID: 11400000, guid: fbe493c58231ac444aef66cd37d252da, type: 2}
     - target: {fileID: 3566915743375759528, guid: e84a8713176d9e24480abd132b2af684, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.526
@@ -934,6 +938,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 593bc8d4dee03ad4a852bfce47919885, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  winPanel: {fileID: 0}
+  losePanel: {fileID: 0}
+  sceneReloadDelay: 2
 --- !u!4 &971753134
 Transform:
   m_ObjectHideFlags: 0
@@ -1613,11 +1620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfe89054a6d6164b962651f41a4f777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponConfig: {fileID: 0}
   firePoint: {fileID: 5836553229856307718}
   cannonTransform: {fileID: 1210628611}
   lineRenderer: {fileID: 2095337055}
-  rocketLaunchForce: 40
-  maxDragDistance: 3
   onAmmoChanged: {fileID: 0}
   availableRocketTypes:
   - {fileID: 11400000, guid: a07dbd839f8cb5b479d3d718bf8de119, type: 2}
@@ -1775,6 +1781,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3758380628419390882, guid: 4bd8717345862a64596906325a459049, type: 3}
+      propertyPath: weaponConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 8ed1bce99c1d6d544ae4b357850b658e, type: 2}
     - target: {fileID: 3758380628419390882, guid: 4bd8717345862a64596906325a459049, type: 3}
       propertyPath: onAmmoChanged
       value: 

@@ -502,7 +502,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8454354343141847033}
-  - component: {fileID: 4903901147610980979}
   - component: {fileID: 8534866278293911929}
   m_Layer: 0
   m_Name: BulletKatana
@@ -534,31 +533,6 @@ Transform:
   - {fileID: 4814384322648818821}
   m_Father: {fileID: 5825425365839752685}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4903901147610980979
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1244723065000535873}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19182792e01a44b97b52773fa2df1fbc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _index: 2
-  _icon: {fileID: 21300000, guid: 371cf6ecb1c2242a8964427b11fa220a, type: 3}
-  _rigidbody: {fileID: 8534866278293911929}
-  _collider: {fileID: 3843820912748270577}
-  _idleNode: {fileID: 8147011647336868341}
-  _flyNode: {fileID: 597278205583162552}
-  _onTargetNode: {fileID: 8223483790462342549}
-  _inHandNode: {fileID: 4814384322648818821}
-  _spriteHolder: {fileID: 1812976981083311000}
-  _rotateAxisOnFly: {x: 1, y: 0, z: 0}
-  _rotateSpeed: 30
-  _idleParticles: {fileID: 4668681782319833876}
-  _trailParticles: {fileID: 7422256629397061997}
 --- !u!54 &8534866278293911929
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -12172,7 +12146,6 @@ GameObject:
   - component: {fileID: 3053843933738440400}
   - component: {fileID: 3914350265248913849}
   - component: {fileID: 2245456611288851271}
-  - component: {fileID: 4078709651616037290}
   - component: {fileID: 2471701900287071837}
   - component: {fileID: 3950595654267478025}
   - component: {fileID: 3758380628419390882}
@@ -12251,57 +12224,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4078709651616037290
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6384810742702113787}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c1b37b2cb04b43cea42ad97596772b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _kThrustY: 6000
-  _kThrustZ: -1000
-  _rigidBodies:
-  - {fileID: 1186303838695666848}
-  - {fileID: 5765777867330323645}
-  - {fileID: 3688136955388152577}
-  - {fileID: 2617833140525462702}
-  - {fileID: 1256459310598983837}
-  - {fileID: 7748152255209214582}
-  - {fileID: 780618307879428538}
-  - {fileID: 4921638934748753224}
-  - {fileID: 6269879438751968854}
-  - {fileID: 7821645188678802858}
-  - {fileID: 6288921224021550868}
-  - {fileID: 7949438907495715002}
-  - {fileID: 3545411431000036523}
-  - {fileID: 7265829579349998398}
-  - {fileID: 4248261052098432221}
-  _rigidBodiesAddForce:
-  - {fileID: 1186303838695666848}
-  - {fileID: 4921638934748753224}
-  - {fileID: 6288921224021550868}
-  - {fileID: 4248261052098432221}
-  _colliders:
-  - {fileID: 3009238354303219679}
-  - {fileID: 2282508270894576497}
-  - {fileID: 8971801686055363047}
-  - {fileID: 1807880285766319608}
-  - {fileID: 2921565498958285558}
-  - {fileID: 8032820293583073257}
-  - {fileID: 958797191260708889}
-  - {fileID: 7263621626424357510}
-  - {fileID: 8007755165656388641}
-  - {fileID: 2831056848110115541}
-  - {fileID: 226194622603342912}
-  - {fileID: 8407031577631688056}
-  - {fileID: 6780923786172832028}
-  - {fileID: 2183473470085123405}
-  - {fileID: 6836343524397673311}
 --- !u!114 &2471701900287071837
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12383,12 +12305,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bfe89054a6d6164b962651f41a4f777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponConfig: {fileID: 11400000, guid: 8ed1bce99c1d6d544ae4b357850b658e, type: 2}
   firePoint: {fileID: 5290968284230225509}
   cannonTransform: {fileID: 7887943217673934676}
   lineRenderer: {fileID: 7202412849453217996}
-  rocketLaunchForce: 20
-  maxDragDistance: 3
-  onAmmoChanged: {fileID: 11400000, guid: 7ebb9d301b611fb4b9ec1757790deaaa, type: 2}
+  onAmmoChanged: {fileID: 11400000, guid: 7af2714d7ba91174681df00f31a95cf2, type: 2}
   availableRocketTypes:
   - {fileID: 11400000, guid: a07dbd839f8cb5b479d3d718bf8de119, type: 2}
 --- !u!120 &7202412849453217996

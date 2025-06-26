@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerHealth : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
     [SerializeField] private float maxHealth = 10f;
+    [SerializeField] private GameEvent onPlayerDied;
 
     private float currentHealth;
 
@@ -25,13 +27,8 @@ public class PlayerHealth : MonoBehaviour, IDamageable
 
     private void Die()
     {
-        Debug.Log("Player has died. GAME OVER.");
-        // Find the GameManager and reload the scene after a short delay
-        GameManager gameManager = FindObjectOfType<GameManager>();
-        if (gameManager != null)
-        {
-            gameManager.Invoke("ReloadScene", 0.5f);
-        }
+        Debug.Log("Player has died. Raising OnPlayerDied event.");
+        onPlayerDied?.Raise();
         gameObject.SetActive(false);
     }
 } 

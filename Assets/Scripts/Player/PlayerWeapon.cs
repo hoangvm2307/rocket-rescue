@@ -11,7 +11,7 @@ public class PlayerWeapon : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float rocketLaunchForce = 20f;
-    [SerializeField] private float maxDragDistance = 3f;
+    [SerializeField] private float maxDragDistance = 400f;
 
     [Header("Events")]
     [SerializeField] private IntEvent onAmmoChanged;
@@ -23,6 +23,10 @@ public class PlayerWeapon : MonoBehaviour
     
     // Thay vì lưu vị trí thế giới, ta lưu vị trí màn hình
     private Vector3 dragStartScreenPos;
+
+    [Header("Aiming & Firing")]
+    [Tooltip("The curve that maps normalized drag distance (0-1) to weapon power (0-1). Allows for non-linear power scaling.")]
+    [SerializeField] private AnimationCurve dragToPowerCurve = AnimationCurve.Linear(0, 0, 1, 1);
 
     private RocketTypeSO CurrentRocketType => availableRocketTypes.Count > 0 ? availableRocketTypes[currentRocketIndex] : null;
     public int CurrentAmmo => CurrentRocketType != null ? ammoInventory[CurrentRocketType] : 0;
@@ -62,16 +66,22 @@ public class PlayerWeapon : MonoBehaviour
     public void HandleDragEnd(Vector3 screenPosition)
     {
         lineRenderer.enabled = false;
-        Vector3 dragVectorScreen = screenPosition - dragStartScreenPos;
-        
-        // Chuyển đổi khoảng cách kéo trên màn hình thành lực bắn
-        // Ta có thể dùng một hệ số để điều chỉnh cho phù hợp
-        float screenDragMagnitude = dragVectorScreen.magnitude;
-        float launchPower = Mathf.Clamp01(screenDragMagnitude / (Screen.height * 0.2f)); // ví dụ: 20% chiều cao màn hình là lực tối đa
 
-        if (launchPower > 0.1f)
+        float screenDragMagnitude = (dragStartScreenPos - screenPosition).magnitude;
+        
+        // Clamp the drag magnitude to the max distance
+        screenDragMagnitude = Mathf.Min(screenDragMagnitude, maxDragDistance);
+
+        // Normalize the drag distance to a 0-1 range
+        float normalizedDrag = screenDragMagnitude / maxDragDistance;
+
+        // Use the AnimationCurve to get the final power
+        float power = dragToPowerCurve.Evaluate(normalizedDrag);
+
+        if (power > 0.05f) // Add a small threshold to avoid firing on simple clicks
         {
-            FireRocket(-dragVectorScreen.normalized, launchPower);
+            Vector3 worldDragDirection = (dragStartScreenPos - screenPosition).normalized;
+            FireRocket(worldDragDirection, power);
         }
     }
 

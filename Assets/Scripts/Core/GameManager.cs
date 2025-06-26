@@ -1,9 +1,14 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // Để reload màn chơi
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+
+    [SerializeField] private GameObject winPanel;
+    [SerializeField] private GameObject losePanel;
+    [SerializeField] private float sceneReloadDelay = 2f;
 
     private int totalEnemies;
 
@@ -24,10 +29,12 @@ public class GameManager : MonoBehaviour
     {
         // Đếm tổng số kẻ địch có trong màn chơi lúc bắt đầu
         totalEnemies = FindObjectsOfType<BaseEnemy>().Length;
+        winPanel.SetActive(false);
+        losePanel.SetActive(false);
     }
 
     // Hàm này sẽ được gọi từ script Enemy mỗi khi có 1 kẻ địch bị tiêu diệt
-    public void OnAnEnemyDefeated()
+    public void OnEnemyDefeated()
     {
         totalEnemies--;
     }
@@ -37,15 +44,41 @@ public class GameManager : MonoBehaviour
         return totalEnemies <= 0;
     }
 
-    public void WinGame()
+    public void CheckWinCondition()
     {
-        Debug.Log("YOU WIN! RESCUED THE HOSTAGE!");
-        // Tạm thời reload lại màn chơi sau 2 giây
-        Invoke("ReloadScene", 2f);
+        if (AreAllEnemiesDefeated())
+        {
+            WinGame();
+        }
+        else
+        {
+            Debug.Log("Hostage reached, but not all enemies are defeated!");
+            // Optionally, show a UI message to the player here.
+        }
     }
 
-    void ReloadScene()
+    private void WinGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("YOU WIN!");
+        winPanel.SetActive(true);
+        Time.timeScale = 0f; // Pause the game
+    }
+
+    public void HandlePlayerDeath()
+    {
+        Debug.Log("GameManager received player death event. Starting reload coroutine.");
+        losePanel.SetActive(true);
+        Time.timeScale = 0f; // Pause the game
+        StartCoroutine(ReloadSceneAfterDelay());
+    }
+
+    private IEnumerator ReloadSceneAfterDelay()
+    {
+        // We need to wait using unscaled time because we set timeScale to 0
+        yield return new WaitForSecondsRealtime(sceneReloadDelay);
+        
+        // Reset time scale before loading the new scene
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }
