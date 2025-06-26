@@ -2,7 +2,7 @@
 // Folder: Scripts/Enemy/
 using UnityEngine;
 
-public class DroneEnemy : MonoBehaviour
+public class DroneEnemy : BaseEnemy
 {
     [Header("Patrol Settings")]
     [SerializeField] private Transform[] patrolPoints;

@@ -14,7 +14,7 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private float maxDragDistance = 3f;
 
     [Header("Events")]
-    [SerializeField] private GameEvent onAmmoChanged;
+    [SerializeField] private IntEvent onAmmoChanged;
 
     [Header("Weapon Inventory")]
     [SerializeField] private List<RocketTypeSO> availableRocketTypes;
@@ -36,7 +36,7 @@ public class PlayerWeapon : MonoBehaviour
         }
 
         lineRenderer.enabled = false;
-        onAmmoChanged.Raise();
+        RaiseAmmoChangedEvent();
      
     }
  
@@ -85,7 +85,7 @@ public class PlayerWeapon : MonoBehaviour
             ammoInventory[CurrentRocketType]--;
         }
         
-        onAmmoChanged.Raise(); // Bắn sự kiện
+        RaiseAmmoChangedEvent();
 
         Quaternion rocketRotation = cannonTransform.rotation;
         GameObject rocketGO = Instantiate(CurrentRocketType.rocketPrefab, firePoint.position, rocketRotation);
@@ -113,5 +113,19 @@ public class PlayerWeapon : MonoBehaviour
         // Điểm cuối của đường kẻ
         Vector3 endPoint = firePoint.position + (Vector3)aimDirection * (visualMagnitude / 50f); // Chia lại cho hệ số để có độ dài hợp lý trong world space
         lineRenderer.SetPosition(1, endPoint);
+    }
+
+    private void RaiseAmmoChangedEvent()
+    {
+        if (onAmmoChanged == null) return;
+
+        if (HasInfiniteAmmo)
+        {
+            onAmmoChanged.Raise(-1); // Use -1 to signify infinite ammo
+        }
+        else
+        {
+            onAmmoChanged.Raise(CurrentAmmo);
+        }
     }
 }

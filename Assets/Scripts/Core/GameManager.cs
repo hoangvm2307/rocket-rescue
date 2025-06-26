@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // Đếm tổng số kẻ địch có trong màn chơi lúc bắt đầu
-        totalEnemies = FindObjectsOfType<Enemy>().Length;
+        totalEnemies = FindObjectsOfType<BaseEnemy>().Length;
     }
 
     // Hàm này sẽ được gọi từ script Enemy mỗi khi có 1 kẻ địch bị tiêu diệt

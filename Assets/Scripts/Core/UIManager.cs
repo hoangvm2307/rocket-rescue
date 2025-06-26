@@ -5,20 +5,23 @@ using TMPro;
 public class UIManager : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI ammoText;
-    [SerializeField] private PlayerWeapon playerWeapon; // Cần tham chiếu để lấy số đạn
 
-    // Hàm này sẽ được gọi bởi GameEventListener khi sự kiện OnAmmoChanged xảy ra
-    public void UpdateAmmoText()
+    /// <summary>
+    /// Public method to be called by an IntEventListener.
+    /// It updates the ammo text based on the received value.
+    /// </summary>
+    /// <param name="ammoCount">The current ammo count. -1 signifies infinite ammo.</param>
+    public void UpdateAmmoText(int ammoCount)
     {
-        if (playerWeapon != null && ammoText != null)
+        if (ammoText != null)
         {
-            if (playerWeapon.HasInfiniteAmmo)
+            if (ammoCount < 0) // Check for the infinite ammo signal
             {
                 ammoText.text = "ROCKETS: ∞";
             }
             else
             {
-                ammoText.text = $"ROCKETS: {playerWeapon.CurrentAmmo}";
+                ammoText.text = $"ROCKETS: {ammoCount}";
             }
         }
     }

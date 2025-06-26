@@ -4,6 +4,7 @@ using UnityEngine;
 public class Bomb : MonoBehaviour
 {
     [Header("Explosion Settings")]
+    [SerializeField] private float damage = 1f;
     [SerializeField] private float explosionRadius = 3f;
     [SerializeField] private GameObject explosionVFX;  
  
@@ -22,13 +23,8 @@ public class Bomb : MonoBehaviour
  
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (Collider hit in colliders)
-        { 
-            if (hit.CompareTag("Player"))
-            {
-                Debug.Log("PLAYER HIT BY BOMB!");
-                // TODO: Gọi hàm trừ máu hoặc thua game ở đây
-                // GameManager.Instance.LoseGame();
-            }
+        {
+            hit.GetComponent<IDamageable>()?.TakeDamage(damage);
         }
  
         Destroy(gameObject);

@@ -1,18 +1,19 @@
 using UnityEngine;
 
-public class EnemyPatrol : MonoBehaviour
+public class EnemyPatrol : BaseEnemy
 {
     [Header("Patrol Settings")]
     [SerializeField] private Transform[] patrolPoints;  
     [SerializeField] private float moveSpeed = 3f;
 
-    [Header("Combat Settings")]
-    [SerializeField] private GameObject deathEffect;
-    [SerializeField] private GameEvent onEnemyDefeatedEvent;
-
     private int currentPointIndex = 0;
 
     void Update()
+    {
+        HandlePatrol();
+    }
+
+    private void HandlePatrol()
     {
         if (patrolPoints.Length == 0) return;
  
@@ -23,19 +24,5 @@ public class EnemyPatrol : MonoBehaviour
         {
             currentPointIndex = (currentPointIndex + 1) % patrolPoints.Length;
         }
-    }
-     
-    public void TakeDamage()
-    {
-        if (onEnemyDefeatedEvent != null)
-        {
-            onEnemyDefeatedEvent.Raise();
-        }
-
-        if (deathEffect != null)
-        {
-            Instantiate(deathEffect, transform.position, Quaternion.identity);
-        }
-        Destroy(gameObject);
     }
 }

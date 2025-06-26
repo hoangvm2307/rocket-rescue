@@ -4,6 +4,7 @@ using UnityEngine;
 public class RocketController : MonoBehaviour
 {
     [Header("Explosion Settings")]
+    [SerializeField] private float damage = 1f;
     [SerializeField] private float explosionRadius = 5f;
     [SerializeField] private float explosionForce = 700f;
     [SerializeField] private GameObject explosionVFX;
@@ -64,10 +65,8 @@ public class RocketController : MonoBehaviour
                 hit.GetComponent<PlayerMotor>()?.ApplyRocketJump(transform.position, explosionForce);
             }
 
-            if (hit.GetComponent<EnemyPatrol>() != null)
-            {
-                hit.GetComponent<EnemyPatrol>().TakeDamage();
-            }
+            // Deal damage to any damageable object
+            hit.GetComponent<IDamageable>()?.TakeDamage(damage);
         }
         Destroy(gameObject);
     }

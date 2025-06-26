@@ -325,7 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammoText: {fileID: 1778127437}
-  playerWeapon: {fileID: 2095337056}
 --- !u!114 &489783697
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,17 +418,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 489783695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4b5e7a062eb6e9945b2a1c887ab77f6f, type: 3}
+  m_Script: {fileID: 11500000, guid: 275f05f42a16962428b7953d1d9827cf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 7ebb9d301b611fb4b9ec1757790deaaa, type: 2}
+  Event: {fileID: 11400000, guid: 7af2714d7ba91174681df00f31a95cf2, type: 2}
   Response:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 489783696}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
         m_MethodName: UpdateAmmoText
-        m_Mode: 1
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -510,7 +509,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: SniperEnemy
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6443915530754583916, guid: e84a8713176d9e24480abd132b2af684, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -549,6 +549,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 833058e2944318841ac78cfca9aab36d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 1
+  deathEffect: {fileID: 0}
+  onEnemyDefeatedEvent: {fileID: 0}
   patrolPoints: []
   moveSpeed: 4
   bombPrefab: {fileID: 9060412898211659494, guid: 43aaa5f1d65d5174fa76e7095ac1158d, type: 3}
@@ -1615,7 +1618,7 @@ MonoBehaviour:
   lineRenderer: {fileID: 2095337055}
   rocketLaunchForce: 40
   maxDragDistance: 3
-  onAmmoChanged: {fileID: 11400000, guid: 7ebb9d301b611fb4b9ec1757790deaaa, type: 2}
+  onAmmoChanged: {fileID: 0}
   availableRocketTypes:
   - {fileID: 11400000, guid: a07dbd839f8cb5b479d3d718bf8de119, type: 2}
 --- !u!114 &2095337057
@@ -1772,6 +1775,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3758380628419390882, guid: 4bd8717345862a64596906325a459049, type: 3}
+      propertyPath: onAmmoChanged
+      value: 
+      objectReference: {fileID: 11400000, guid: 7af2714d7ba91174681df00f31a95cf2, type: 2}
     - target: {fileID: 3914350265248913849, guid: 4bd8717345862a64596906325a459049, type: 3}
       propertyPath: m_Mass
       value: 1
@@ -1800,7 +1807,8 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: -0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4078709651616037290, guid: 4bd8717345862a64596906325a459049, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
