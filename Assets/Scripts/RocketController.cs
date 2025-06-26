@@ -9,19 +9,14 @@ public class RocketController : MonoBehaviour
     [SerializeField] private float explosionForce = 700f;
     [SerializeField] private GameObject explosionVFX;
 
-    private Rigidbody rb;
-    private GameObject owner;
+    private Rigidbody rb; 
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
     }
-
-    public void SetOwner(GameObject ownerObject)
-    {
-        this.owner = ownerObject;
-    }
+ 
 
     public void Launch(Vector3 direction, float force)
     {
