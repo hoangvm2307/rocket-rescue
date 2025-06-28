@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5374805217988738719}
   - component: {fileID: 5302801338593138039}
   - component: {fileID: 7769877063719066299}
-  m_Layer: 0
+  m_Layer: 31
   m_Name: Rocket
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ba02b66a149e28848acbdeeaeedbfa11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
   explosionRadius: 5
   explosionForce: 30
   explosionVFX: {fileID: 0}

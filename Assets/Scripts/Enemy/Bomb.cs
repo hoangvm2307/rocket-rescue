@@ -27,7 +27,7 @@ public class Bomb : MonoBehaviour
             hit.GetComponent<IDamageable>()?.TakeDamage(damage);
         }
  
-        Destroy(gameObject);
+        // Destroy(gameObject);
     }
  
     private void OnDrawGizmosSelected()
