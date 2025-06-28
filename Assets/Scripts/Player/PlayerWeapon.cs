@@ -8,6 +8,7 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform cannonTransform;
     [SerializeField] private LineRenderer lineRenderer;
+    
 
     [Header("Settings")]
     [SerializeField] private float rocketLaunchForce = 20f;
