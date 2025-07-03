@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1045 &1
+EditorBuildSettings:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Scenes:
+  - enabled: 1
+    path: Assets/_Project/Scenes/SampleScene.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/_ThirdParty/Plugins/RunHitFun/Scenes/Level1.unity
+    guid: 9c1703e5d858e4fd2a974e723585cecb
+  - enabled: 1
+    path: Assets/_ThirdParty/Plugins/RunHitFun/Scenes/Level2.unity
+    guid: 6b7f594b913a84639aa24aec4bfb33d5
+  - enabled: 1
+    path: Assets/_ThirdParty/Plugins/RunHitFun/Scenes/Level3.unity
+    guid: 7ce795a8952c2497588800ca2815fe6b
+  - enabled: 1
+    path: Assets/_ThirdParty/Plugins/RunHitFun/Scenes/Level4.unity
+    guid: dd536e55cc4024c0a9480bca2295d312
+  m_configObjects: {}
+  m_UseUCBPForAssetBundles: 0
