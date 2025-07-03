@@ -1,30 +1,25 @@
-// File: PlayerMotor.cs
+// File: Scripts/Player/PlayerMotor.cs
 using UnityEngine;
-using DG.Tweening; // << THÊM DÒNG NÀY để sử dụng DOTween
+using DG.Tweening;
+// Không cần thư viện "System.Collections" nữa
 
 [RequireComponent(typeof(Rigidbody))]
 public class PlayerMotor : MonoBehaviour
 {
     private Rigidbody rb;
     
-    // --- PHẦN MỚI: CÀI ĐẶT HIỆU ỨNG JUICY ---
     [Header("Juicy Effects (DOTween)")]
-    [Tooltip("Transform của model nhân vật sẽ bị co giãn. Nếu để trống, nó sẽ lấy transform của chính đối tượng này.")]
     [SerializeField] private Transform playerVisualsTransform; 
-    [Tooltip("Độ mạnh của hiệu ứng giãn ra theo chiều dọc.")]
     [SerializeField] private float punchStrengthY = 0.5f;
-    [Tooltip("Độ mạnh của hiệu ứng nén lại theo chiều ngang.")]
     [SerializeField] private float punchStrengthX = -0.2f;
-    [Tooltip("Thời gian để hoàn thành hiệu ứng co giãn.")]
     [SerializeField] private float punchDuration = 0.4f;
-    // -----------------------------------------
 
     [Header("Rocket Jump Settings")]
-    [Tooltip("How much to favor vertical movement. 0 = pure physics, 1 = strong bias upwards.")]
-    [Range(0, 1)]
     [SerializeField] private float verticalBias = 0.3f;
-    [Tooltip("Ensures a minimum upward push, even if the explosion is level with the player. Prevents horizontal-only movement.")]
     [SerializeField] private float minimumUpwardNudge = 0.2f;
+
+    // Biến để lưu trữ platform mà người chơi đang đứng trên
+    private MovingPlatform currentPlatform;
 
     void Awake()
     {
@@ -36,26 +31,35 @@ public class PlayerMotor : MonoBehaviour
             RigidbodyConstraints.FreezeRotationZ;
         rb.interpolation = RigidbodyInterpolation.Interpolate;
 
-        // Nếu không gán transform cho model, tự động lấy của chính nó
         if (playerVisualsTransform == null)
         {
             playerVisualsTransform = this.transform;
         }
     }
 
+    // Sử dụng FixedUpdate để xử lý vật lý
+    void FixedUpdate()
+    {
+        if (currentPlatform != null)
+        {
+            // Di chuyển người chơi cùng với platform
+            // Bằng cách cộng trực tiếp vận tốc của platform vào vị trí của người chơi
+            rb.MovePosition(rb.position + currentPlatform.Velocity * Time.fixedDeltaTime);
+        }
+    }
+
     public void ApplyRocketJump(Vector3 explosionPosition, float force)
     {
-        // --- PHẦN MỚI: KÍCH HOẠT HIỆU ỨNG ---
-        // Dừng bất kỳ hiệu ứng co giãn nào đang chạy trước đó để tránh xung đột
+        // VÌ ĐÃ BỎ SETPARENT, CHÚNG TA KHÔNG CẦN COROUTINE NỮA
+        // Có thể gọi trực tiếp DOPunchScale một cách an toàn
         playerVisualsTransform.DOKill(); 
-        // Kích hoạt hiệu ứng "punch" vào scale
         playerVisualsTransform.DOPunchScale(
-            new Vector3(punchStrengthX, punchStrengthY, punchStrengthX), // Giãn theo Y, nén theo X và Z
+            new Vector3(punchStrengthX, punchStrengthY, punchStrengthX),
             punchDuration, 
-            vibrato: 1, // Số lần rung, 1 là đủ cho hiệu ứng tức thì
-            elasticity: 0.1f); // Độ đàn hồi, giá trị nhỏ sẽ làm hiệu ứng "chắc" hơn
-        // -------------------------------------
-
+            vibrato: 1,
+            elasticity: 0.1f);
+        
+        // Logic vật lý của Rocket Jump giữ nguyên
         Vector3 directionVector = transform.position - explosionPosition;
         
         if (directionVector.y < minimumUpwardNudge)
@@ -71,5 +75,29 @@ public class PlayerMotor : MonoBehaviour
         Vector3 biasedDirection = Vector3.Lerp(originalDirection, Vector3.up, verticality * verticalBias);
 
         rb.AddForce(biasedDirection * force, ForceMode.Impulse);
+    }
+    
+    // Phát hiện khi nào người chơi tiếp xúc với platform
+    private void OnCollisionEnter(Collision collision)
+    {
+        // Thử lấy component MovingPlatform từ đối tượng va chạm
+        if (collision.gameObject.TryGetComponent<MovingPlatform>(out MovingPlatform platform))
+        {
+            // Nếu có, lưu nó lại
+            currentPlatform = platform;
+        }
+    }
+
+    // Phát hiện khi nào người chơi rời khỏi platform
+    private void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.TryGetComponent<MovingPlatform>(out MovingPlatform platform))
+        {
+            // Chỉ xóa tham chiếu nếu đó đúng là platform người chơi vừa rời đi
+            if (platform == currentPlatform)
+            {
+                currentPlatform = null;
+            }
+        }
     }
 }
