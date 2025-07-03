@@ -9,6 +9,8 @@ public class Hostage : MonoBehaviour
     [SerializeField] private Transform visualsTransform;
     [SerializeField] private float rescueAnimationDuration = 1f;
     [SerializeField] private GameObject rescueEffect;
+    [SerializeField] private AudioCueEventChannelSO sfxEventChannel;
+    [SerializeField] private AudioCueSO rescueSound;
 
     private bool isRescued = false;
 
@@ -29,7 +31,10 @@ public class Hostage : MonoBehaviour
 
     private void StartRescueSequence()
     {
-     
+        if (sfxEventChannel != null && rescueSound != null)
+        {
+            sfxEventChannel.RaiseEvent(rescueSound);
+        }
         // DOTween rescue effects
         Sequence rescueSequence = DOTween.Sequence();
 

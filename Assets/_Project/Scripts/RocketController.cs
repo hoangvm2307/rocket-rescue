@@ -10,6 +10,14 @@ public class RocketController : MonoBehaviour
     [SerializeField] private float explosionForce = 700f;
     [SerializeField] private GameObject explosionVFX;
 
+    [Header("Audio")]
+    [Tooltip("Kênh sự kiện để yêu cầu phát SFX")]
+    [SerializeField] private AudioCueEventChannelSO sfxEventChannel;
+    [Tooltip("Âm thanh sẽ phát khi nổ")]
+    [SerializeField] private AudioCueSO explosionSound;
+    [SerializeField] private AudioCueSO launchSound;
+
+
     private Rigidbody rb;
 
     void Awake()
@@ -20,10 +28,12 @@ public class RocketController : MonoBehaviour
 
     public void Launch(Vector3 direction, float force)
     {
+        if (sfxEventChannel != null && launchSound != null)
+        {
+            sfxEventChannel.RaiseEvent(launchSound);
+        }
         rb.AddForce(direction * force, ForceMode.Impulse);
 
-        // --- THÊM HIỆU ỨNG RUNG LẮC ---
-        // Rung lắc nhẹ theo một trục ngẫu nhiên
         transform.DOShakeRotation(duration: 5f, strength: 5f, vibrato: 5).SetLoops(-1, LoopType.Incremental);
         // -------------------------------
     }
@@ -49,6 +59,11 @@ public class RocketController : MonoBehaviour
 
     private void Explode()
     {
+        if (sfxEventChannel != null && explosionSound != null)
+        {
+            sfxEventChannel.RaiseEvent(explosionSound);
+        }
+
         transform.DOKill();
         Camera mainCamera = Camera.main;
         if (mainCamera != null)
@@ -105,7 +120,7 @@ public class RocketController : MonoBehaviour
             IDamageable damageable = hit.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
-                 if (!hit.CompareTag("Player"))
+                if (!hit.CompareTag("Player"))
                 {
                     Vector3 hitDirection = (hit.transform.position - transform.position).normalized;
                     if (hitDirection.y < 0) hitDirection.y = 0;

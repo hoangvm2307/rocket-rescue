@@ -1,8 +1,9 @@
+// File: KillCamController.cs
 using UnityEngine;
-using UnityEngine.UI; // Thêm thư viện này để điều khiển Image
+using UnityEngine.UI;
 using System.Collections;
 
-public class KillCamController : MonoBehaviour // Đổi tên class cho phù hợp
+public class KillCamController : MonoBehaviour
 {
     [Header("Picture-in-Picture Setup")]
     [Tooltip("Kéo GameObject của camera PiP vào đây")]
@@ -15,72 +16,63 @@ public class KillCamController : MonoBehaviour // Đổi tên class cho phù h�
     [Tooltip("Thời gian kill cam hiển thị trên màn hình")]
     [SerializeField] private float displayDuration = 2.0f;
 
-    [Tooltip("Tốc độ game khi slow-motion (ví dụ: 0.1 là 10% tốc độ gốc)")]
+    [Tooltip("Tốc độ game khi slow-motion")]
     [Range(0.01f, 1f)]
     [SerializeField] private float slowMotionScale = 0.1f;
 
+    [Header("2.5D Camera Settings")] // <-- THÊM CÀI ĐẶT MỚI
+    [Tooltip("Khoảng cách của camera PiP trên trục Z so với enemy")]
+    [SerializeField] private float cameraDistance = 15f;
+    [Tooltip("Độ cao của camera PiP so với enemy")]
+    [SerializeField] private float cameraHeightOffset = 1.5f;
+
     private Coroutine focusCoroutine;
-    private float originalFixedDeltaTime; // Biến để lưu giá trị gốc
+    private float originalFixedDeltaTime;
 
     void Start()
     {
-        // Đảm bảo camera và border đã tắt khi bắt đầu game
-        if (pipCamera != null)
-        {
-            pipCamera.gameObject.SetActive(false);
-        }
-        if (pipBorder != null)
-        {
-            pipBorder.gameObject.SetActive(false);
-        }
-        
-        // Lưu lại giá trị gốc của fixedDeltaTime
+        if (pipCamera != null) pipCamera.gameObject.SetActive(false);
+        if (pipBorder != null) pipBorder.gameObject.SetActive(false);
         originalFixedDeltaTime = Time.fixedDeltaTime;
     }
 
-    // Hàm này được gọi bởi GameEventListener khi một enemy bị tiêu diệt
     public void StartFocusSequence(GameObject enemyObject)
     {
         if (pipCamera == null || enemyObject == null) return;
-
-        if (focusCoroutine != null)
-        {
-            // Nếu một kill cam khác đang chạy, chúng ta không làm gì cả để tránh rối
-            // Hoặc bạn có thể StopCoroutine(focusCoroutine) nếu muốn kill cam mới đè lên cái cũ
-            return; 
-        }
-
+        if (focusCoroutine != null) return; 
         focusCoroutine = StartCoroutine(DoPiPSequence(enemyObject.transform));
     }
 
     private IEnumerator DoPiPSequence(Transform target)
     {
-        // 1. Bật Slow-motion
+        // --- Phần Slow-motion và bật camera/border giữ nguyên ---
         Time.timeScale = slowMotionScale;
-        // Cập nhật fixedDeltaTime để vật lý (Rigidbody) chạy đúng trong slow-motion
         Time.fixedDeltaTime = originalFixedDeltaTime * Time.timeScale;
-
-        // 2. Bật camera và khung viền
         pipCamera.gameObject.SetActive(true);
         if (pipBorder != null) pipBorder.gameObject.SetActive(true);
 
-        // 3. Định vị camera (giữ nguyên logic cũ)
-        Vector3 cameraPosition = target.position - (target.forward * 5f) + (Vector3.up * 2f);
+        // --- PHẦN LOGIC ĐỊNH VỊ CAMERA ĐÃ ĐƯỢC THAY ĐỔI ---
+        // 1. Lấy vị trí của mục tiêu
+        Vector3 targetPosition = target.position;
+
+        // 2. Tạo vị trí cho camera bằng cách offset trên trục Z
+        Vector3 cameraPosition = new Vector3(
+            targetPosition.x,                           // Giữ nguyên trục X của mục tiêu
+            targetPosition.y + cameraHeightOffset,      // Đặt camera cao hơn mục tiêu một chút
+            -cameraDistance                             // Luôn đặt camera ở một khoảng cách cố định trên trục Z
+        );
+
+        // 3. Cập nhật vị trí và hướng nhìn của camera
         pipCamera.transform.position = cameraPosition;
-        pipCamera.transform.LookAt(target.position + Vector3.up * 1f);
+        pipCamera.transform.LookAt(targetPosition + (Vector3.up * cameraHeightOffset));
+        // ----------------------------------------------------
 
-        // 4. Đợi hết thời gian hiển thị
-        // QUAN TRỌNG: Phải dùng WaitForSecondsRealtime vì Time.timeScale đã bị thay đổi
+        // --- Phần đợi và tắt hiệu ứng giữ nguyên ---
         yield return new WaitForSecondsRealtime(displayDuration);
-
-        // 5. Tắt camera và khung viền
         pipCamera.gameObject.SetActive(false);
         if (pipBorder != null) pipBorder.gameObject.SetActive(false);
-
-        // 6. Trả lại tốc độ bình thường cho game
         Time.timeScale = 1f;
-        Time.fixedDeltaTime = originalFixedDeltaTime; // Khôi phục lại giá trị gốc
-
+        Time.fixedDeltaTime = originalFixedDeltaTime;
         focusCoroutine = null;
     }
 }

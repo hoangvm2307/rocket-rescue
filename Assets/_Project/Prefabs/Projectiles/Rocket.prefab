@@ -153,3 +153,6 @@ MonoBehaviour:
   explosionRadius: 5
   explosionForce: 40
   explosionVFX: {fileID: 2433282508537954060, guid: 3ef3ae421f71c5c4e97fe12dc2fc6312, type: 3}
+  sfxEventChannel: {fileID: 11400000, guid: 7b164d2534126c74090a92c661e151c7, type: 2}
+  explosionSound: {fileID: 11400000, guid: 960b85e8b817b91439166429a8bb5ace, type: 2}
+  launchSound: {fileID: 11400000, guid: 6340d16ccbac1d94cbfaa09252220731, type: 2}
