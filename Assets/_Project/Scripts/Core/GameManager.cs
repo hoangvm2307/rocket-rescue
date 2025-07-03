@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // Để reload màn chơi
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        // Thiết lập Singleton Pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -54,13 +53,11 @@ public class GameManager : MonoBehaviour
         UpdateObjectivesUI();
         CheckWinCondition();
     }
-    // Hàm này để kiểm tra xem đã hết kẻ địch chưa
     public bool AreAllEnemiesDefeated()
     {
         return totalEnemies <= 0;
     }
 
-    // Hàm này để kiểm tra xem đã giải cứu hết hostage chưa
     public bool AreAllHostagesRescued()
     {
         return hostagesRescued >= totalHostages;
@@ -68,7 +65,6 @@ public class GameManager : MonoBehaviour
 
     private void CheckWinCondition()
     {
-        // Kiểm tra điều kiện thắng dựa trên các biến đếm
         if (enemiesDefeated >= totalEnemies && hostagesRescued >= totalHostages)
         {
             WinGame();
@@ -87,26 +83,25 @@ public class GameManager : MonoBehaviour
     }
 
     private void WinGame()
-    {
-        Debug.Log("YOU WIN!");
+    { 
         winPanel.SetActive(true);
-        // Time.timeScale = 0f; // Pause the game
     }
 
     public void HandlePlayerDeath()
-    {
-        Debug.Log("GameManager received player death event. Starting reload coroutine.");
+    { 
         losePanel.SetActive(true);
-        Time.timeScale = 0f; // Pause the game
+        Time.timeScale = 0f;
         StartCoroutine(ReloadSceneAfterDelay());
     }
 
     private IEnumerator ReloadSceneAfterDelay()
     {
-        // We need to wait using unscaled time because we set timeScale to 0
         yield return new WaitForSecondsRealtime(sceneReloadDelay);
-
-        // Reset time scale before loading the new scene
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    public void RestartGame()
+    {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
