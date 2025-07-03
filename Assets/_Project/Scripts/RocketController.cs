@@ -105,14 +105,12 @@ public class RocketController : MonoBehaviour
             IDamageable damageable = hit.GetComponentInParent<IDamageable>();
             if (damageable != null)
             {
-                // Tính toán hướng văng ra từ tâm vụ nổ tới đối tượng
-                Vector3 hitDirection = (hit.transform.position - transform.position).normalized;
-
-                // Đảm bảo hướng văng ra không quá dốc lên trên
-                if (hitDirection.y < 0) hitDirection.y = 0;
-
-                // Gọi hàm TakeDamage với đầy đủ các tham số
-                damageable.TakeDamage(damage, hitDirection, explosionForce);
+                 if (!hit.CompareTag("Player"))
+                {
+                    Vector3 hitDirection = (hit.transform.position - transform.position).normalized;
+                    if (hitDirection.y < 0) hitDirection.y = 0;
+                    damageable.TakeDamage(damage, hitDirection, explosionForce);
+                }
             }
         }
         Destroy(gameObject);

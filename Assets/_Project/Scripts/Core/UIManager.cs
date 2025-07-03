@@ -36,8 +36,7 @@ public class UIManager : MonoBehaviour
     /// <param name="enemiesRemaining">Number of enemies left to defeat</param>
     /// <param name="hostagesRemaining">Number of hostages left to rescue</param>
     public void UpdateObjectives(int enemiesRemaining, int hostagesRemaining)
-    {
-        Debug.Log("UpdateObjectives: " + enemiesRemaining + " " + hostagesRemaining);
+    { 
         if (enemiesText != null)
         {
             enemiesText.text = $"ENEMIES: {enemiesRemaining}";

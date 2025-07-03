@@ -78,7 +78,7 @@ public abstract class BaseEnemy : MonoBehaviour, IDamageable
     }
     private void SetRagdollEnabled(bool isEnabled)
     {
-        Debug.Log("SetRagdollEnabled: " + isEnabled);
+        Debug.Log("[BaseEnemy] SetRagdollEnabled: " + isEnabled);
         if (animator != null)
         {
             animator.enabled = !isEnabled;

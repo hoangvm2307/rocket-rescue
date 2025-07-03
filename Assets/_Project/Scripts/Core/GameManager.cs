@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     [SerializeField] private GameObject losePanel;
     [SerializeField] private float sceneReloadDelay = 2f;
-
+    [SerializeField] private float deathPanelDelay = 2f;
     private int totalEnemies;
     private int totalHostages;
     private int enemiesDefeated = 0;
@@ -83,15 +83,13 @@ public class GameManager : MonoBehaviour
     }
 
     private void WinGame()
-    { 
+    {
         winPanel.SetActive(true);
     }
 
     public void HandlePlayerDeath()
-    { 
-        losePanel.SetActive(true);
-        Time.timeScale = 0f;
-        StartCoroutine(ReloadSceneAfterDelay());
+    {
+        StartCoroutine(PlayerDeathSequence());
     }
 
     private IEnumerator ReloadSceneAfterDelay()
@@ -104,5 +102,14 @@ public class GameManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    private IEnumerator PlayerDeathSequence()
+    {
+        // A. Đợi trong một khoảng thời gian
+        yield return new WaitForSeconds(deathPanelDelay);
+
+        // B. Sau khi đợi xong, thực hiện các hành động thua cuộc
+        losePanel.SetActive(true);
+        Time.timeScale = 0f; 
     }
 }
