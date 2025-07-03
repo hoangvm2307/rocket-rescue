@@ -67,7 +67,7 @@ public class GameManager : MonoBehaviour
     {
         if (enemiesDefeated >= totalEnemies && hostagesRescued >= totalHostages)
         {
-            WinGame();
+            StartCoroutine(HandleWinGame());
         }
     }
 
@@ -82,9 +82,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void WinGame()
+    private IEnumerator HandleWinGame()
     {
-        winPanel.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        winPanel.SetActive(true); 
     }
 
     public void HandlePlayerDeath()
